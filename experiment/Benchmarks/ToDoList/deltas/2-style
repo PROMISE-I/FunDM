@@ -1,0 +1,11 @@
+( ?
+, \(Event "AddTask" ["Exercise"]) ->  
+    ( (Html.div id id id::id::(Html.form id id (Html.input id::(id, +33)::id id id)::id)::id)
+    , \(Event "AddTask" ["Eat Fruits"]) -> 
+        ( (Html.div id id id::id::(Html.form id id id::(Html.input id::(id, +52)::id id id)::id)::id);
+          (Html.div id id id::id::(Html.form id id (Html.input id::(id, +33)::id id id)::id)::id)
+        , ?
+        )
+    )
+)
+

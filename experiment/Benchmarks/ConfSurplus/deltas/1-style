@@ -1,0 +1,7 @@
+( ?
+, \(Event "AddParti" []) -> 
+    ( (Html.div id id id::(Html.table id id (Html.tbody id id (Html.tr id id (Html.td id::(id, +29)::id id id)::id)::id)::id)::id)
+    , ?
+    )
+)
+

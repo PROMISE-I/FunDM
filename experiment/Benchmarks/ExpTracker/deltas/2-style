@@ -1,0 +1,10 @@
+( ?
+, \(Event "CalculateTotal" []) ->  
+    ( (Html.div id id id::(Html.table id id (Html.tbody id id id::(Html.tr id id (Html.td id::(id, +35)::id id id)::id)::id)::id)::id)
+    , \(Event "Back" []) -> 
+        ( (Html.div (id, +-14123123)::id id id)
+        , ?
+        )
+    )
+)
+

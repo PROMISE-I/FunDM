@@ -1,0 +1,369 @@
+let
+    white = 255255255,
+    black = 0,
+    gray = 128128128,
+    lightGray = 211211211,
+    blue = 122255,
+    lightBlue = 173216230,
+    red = 255000,
+    green = 34139,
+    orange = 255165,
+
+
+    center = ("text-align", "center"),
+    right = ("text-align", "right"),
+    left = ("text-align", "left"),
+    pointer = ("cursor", "pointer"),
+    noBorder = ("border", "none"),
+    block = ("display", "block"),
+    inlineBlock = ("display", "inline-block"),
+    
+    width = \w -> ("width", w),
+    height = \h -> ("height", h),
+    lineHeight = \h -> ("line-height", h),
+
+    leftDistance = \l -> ("left", l),
+    topDistance  = \t -> ("top", t),
+    
+    margin = \m -> ("margin", m),
+    marginTop = \m -> ("margin-top", m),
+    marginRight = \m -> ("margin-right", m),
+    marginBottom = \m -> ("margin-bottom", m),
+    marginLeft = \m -> ("margin-left", m),
+    
+    padding = \p -> ("padding", p),
+    paddingTop = \p -> ("padding-top", p),
+    paddingRight = \p -> ("padding-right", p),
+    paddingBottom = \p -> ("padding-bottom", p),
+    paddingLeft = \p -> ("padding-left", p),
+    
+    fontSize = \s -> ("font-size", s),
+    fontWeight = \w -> ("font-weight", w),
+    backgroundColor = \c -> ("background-color", c),
+    borderRadius = \r -> ("border-radius", r),
+    color = \c -> ("color", c),
+    
+    opacity = \o -> ("opacity", o),
+
+
+    len = \xs ->
+        case xs of
+            [] -> 0 |
+            _::ys -> 1 + (len ys),
+    
+    nth = \xs -> \i ->
+        case xs of 
+            [] -> "error" |         
+            x::ys -> 
+                case i of
+                    0 -> x |
+                    _ -> nth ys (i-1),
+            
+    indices = \xs -> \i ->
+        case xs of
+            [] -> [] |
+            _::ys -> i::(indices ys (i+1)),
+    
+    sum = \xs ->
+        case xs of
+            [] -> 0 |
+            x::ys -> x + (sum ys),
+            
+    map = \f -> \xs ->
+        case xs of
+            [] -> [] |
+            x::ys -> (f x) :: (map f ys),
+    
+    filter = \f -> \xs ->
+        case xs of
+            [] -> [] |
+            x::ys ->
+                case f x of
+                    True -> x::(filter f ys) |
+                    _ -> filter f ys,
+                    
+    zip = \xs -> \ys ->
+        case xs of
+            [] -> [] |
+            x::xs1 ->
+                case ys of 
+                    [] -> [] |
+                    y::ys1 -> [x, y] :: (zip xs1 ys1),
+
+    join = \xs -> \deli ->
+        case xs of
+            [] -> "" |
+            x::[] -> x |
+            x::ys -> x ++ deli ++ (join ys deli),
+        
+    toString = \n ->
+        case n of
+            0 -> "0" | 1 -> "1" | 2 -> "2" | 3 -> "3" | 4 -> "4" |
+            5 -> "5" | 6 -> "6" | 7 -> "7" | 8 -> "8" | 9 -> "9",
+    
+    toInt = \s ->
+        case s of
+            "0" -> 0 | "1" -> 1 | "2" -> 2 | "3" -> 3 | "4" -> 4 |
+            "5" -> 5 | "6" -> 6 | "7" -> 7 | "8" -> 8 | "9" -> 9,
+
+
+    headerStyle = 
+        [ noBorder, backgroundColor blue, color white
+        , padding 20, fontSize 24, fontWeight 700
+        ],
+
+    sectionStyle = 
+        [ margin 5, padding 20, backgroundColor lightGray
+        , borderRadius 5
+        ],
+
+    inputStyle = 
+        [ width 200, height 30, lineHeight 30, borderRadius 3,
+          marginRight 10, marginBottom 10, padding 5, fontSize 14
+        ],
+    
+    buttonStyle =
+        [ width 120, height 40, backgroundColor green, color white
+        , borderRadius 5, fontSize 16, fontWeight 700, pointer
+        ],
+
+    subPageStyle =
+        [ ("position", "absolute"), topDistance 150, center
+        ],
+
+    subFormStyle =
+        [ margin 20, paddingLeft 115, paddingRight 115, paddingTop 10,
+          paddingBottom 20, width 300, backgroundColor lightBlue, 
+          borderRadius 5],
+
+    tableStyle = 
+        [ ("border-collapse", "collapse")
+        ],
+
+    thStyle =
+        [ backgroundColor blue, color white, padding 10, fontWeight 700
+        ],
+
+    tdStyle =
+        [ padding 10, center, ("border-bottom", "1px solid rbg(128, 128, 128)")
+        ],
+
+
+    generateFlightRow = \flight ->
+        case flight of
+            fid::from::to::date::price::seats::[] -> 
+                Html.tr [] []
+                    [ Html.td tdStyle [] [fid]
+                    , Html.td tdStyle [] [from]
+                    , Html.td tdStyle [] [to]
+                    , Html.td tdStyle [] [date]
+                    , Html.td tdStyle [] [price]
+                    , Html.td tdStyle [] [seats]
+                    , Html.td tdStyle [] 
+                        [ Html.button buttonStyle
+                            [("onclick", "BookFlight"), ("arg0", fid)]
+                            ["Book"]
+                        ]
+                    ],
+
+    generateFlightTable = \flights ->
+        Html.table tableStyle []
+            [ Html.thead [] []
+                [ Html.tr [] []
+                    [ Html.th thStyle [] ["ID"]
+                    , Html.th thStyle [] ["From"]
+                    , Html.th thStyle [] ["To"]
+                    , Html.th thStyle [] ["Date"]
+                    , Html.th thStyle [] ["Price"]
+                    , Html.th thStyle [] ["Seats"]
+                    , Html.th thStyle [] ["Action"]
+                    ]
+                ]
+            , Html.tbody [] [] (map generateFlightRow flights)
+            ],
+
+    generateBookingRow = \booking ->
+        case booking of
+            bid::flightId::name::seats::[] ->
+                Html.tr [] []
+                    [ Html.td tdStyle [] [bid]
+                    , Html.td tdStyle [] [flightId]
+                    , Html.td tdStyle [] [name]
+                    , Html.td tdStyle [] [seats]
+                    , Html.td tdStyle [] 
+                        [ Html.button buttonStyle
+                            [("onclick", "CancelBooking"), ("arg0", bid)] 
+                            ["Cancel"]
+                        ]
+                    ],
+
+    generateBookingTable = \bookings ->
+        Html.table tableStyle []
+            [ Html.thead [] []
+                [ Html.tr [] []
+                    [ Html.th thStyle [] ["Booking ID"]
+                    , Html.th thStyle [] ["Flight ID"]
+                    , Html.th thStyle [] ["Name"]
+                    , Html.th thStyle [] ["Seats"]
+                    , Html.th thStyle [] ["Action"]
+                    ]
+                ]
+            , Html.tbody [] [] (map generateBookingRow bookings)
+            ],
+
+
+    searchFlights = \flights -> \from -> \to -> \date ->
+        filter 
+            (\flight -> 
+                case flight of
+                    _::flightFrom::flightTo::flightDate::_::_::[] ->
+                        let 
+                            fromCond = from == "" || flightFrom == from,
+                            toCond   =   to == "" ||   flightTo == to  ,
+                            dateCond = date == "" || flightDate == date
+                        in
+                            fromCond && toCond && dateCond
+            ) 
+            flights,
+
+    bookFlight = \flights -> \bookings -> \flightId -> \name -> \seats ->
+        let
+            updateFlight = \flight ->
+                case flight of
+                    fid::from::to::date::price::availableSeats::[] ->
+                        case fid == flightId of
+                            True -> [fid, from, to, date, price, availableSeats - seats] |
+                            False -> flight,
+            
+            updatedFlights = map updateFlight flights,
+            
+            newBookingId = "B" ++ (toString ((len bookings) + 1)),
+            newBooking = [newBookingId, flightId, name, seats]
+        in
+            [updatedFlights, bookings ++ [newBooking]],
+
+    cancelBooking = \flights -> \bookings -> \bookingId ->
+        let
+            booking = filter (\b -> case b of fid::_ -> fid == bookingId) bookings,
+            
+            updateFlight = \flight ->
+                case flight of
+                    fid::from::to::date::price::availableSeats::[] ->
+                        (case booking of
+                            bookingInfo::[] ->
+                                (case bookingInfo of 
+                                    _::flightId::_::seats::[] ->
+                                        (case fid == flightId of
+                                            True -> [fid, from, to, date, price, availableSeats + seats] |
+                                            False -> flight)) |
+                            _ -> flight),
+            
+            updatedFlights = map updateFlight flights,
+            
+            updatedBookings = filter (\b -> case b of fid::_ -> fid != bookingId) bookings 
+        in
+            [updatedFlights, updatedBookings],
+
+
+    view = \model ->
+        case model of
+            displayedFlights::allFlights::bookings::pgn::fid::[] ->  
+                let mainPageContentList =
+                    [ Html.div headerStyle [] ["Flight Booking System"]
+                    , Html.div sectionStyle []
+                        [ Html.h3 [] [] ["Search Flights"]
+                        , Html.form [] [("onsubmit", "SearchFlights")] 
+                            [ Html.input  inputStyle  [("placeholder", "From"), ("name", "fromInput")] []
+                            , Html.input  inputStyle  [("placeholder", "To"), ("name", "toInput")] []
+                            , Html.input  inputStyle  [("placeholder", "Date"), ("name", "dateInput")] []
+                            , Html.input  buttonStyle [("type", "submit"), ("value", "Search")] []
+                            ]
+                        ]
+                    , Html.div sectionStyle []
+                        [ Html.h3 [] [] ["Available Flights"]
+                        , generateFlightTable displayedFlights
+                        ]
+                    , Html.div sectionStyle []
+                        [ Html.h3 [] [] ["Your Bookings"]
+                        , generateBookingTable bookings
+                        ]
+                    ]
+                in
+                    case pgn of
+                        0 -> Html.div [] [] mainPageContentList |
+                        1 -> Html.div [] []
+                                [ Html.div [opacity "0.5"] [] mainPageContentList
+                                , Html.div subPageStyle [] 
+                                    [ Html.form subFormStyle [("onsubmit", "PersonalInfoConfirm")] 
+                                        [ Html.h3 [] [] ["Enter your name and seats"]
+                                        , Html.input inputStyle [("placeholder", "name"), ("name", "username")] [] 
+                                        , Html.input inputStyle [("placeholder", "seats"), ("name", "seats")] []
+                                        , Html.input buttonStyle [("type", "submit"), ("value", "Confirm")] []
+                                        ]
+                                    ]
+                                ],
+
+    update = \model -> \event -> 
+        case model of
+            displayedFlights::allFlights::bookings::pgn::fid::[] ->
+                case pgn of
+                    0 ->
+                        (case event of
+                            Event "SearchFlights" from::to::date::[] ->
+                                let
+                                    filteredFlights = searchFlights allFlights from to date
+                                in
+                                    [filteredFlights, allFlights, bookings, pgn, fid] |
+                        
+                            Event "BookFlight" flightId::[] ->
+                                [displayedFlights, allFlights, bookings, 1, flightId] |
+                                
+                            Event "CancelBooking" bookingId::[] ->
+                                let
+                                    result = cancelBooking allFlights bookings bookingId
+                                in
+                                    (case result of
+                                        updatedFlights::updatedBookings::[] -> [updatedFlights, updatedFlights, updatedBookings, pgn, fid])) |
+                    
+                    1 -> 
+                        (case event of
+                            Event "PersonalInfoConfirm" name::seats::[] ->
+                                let
+                                    result = bookFlight allFlights bookings fid name seats
+                                in
+                                    (case result of
+                                        updatedFlights::updatedBookings::[] -> [updatedFlights, updatedFlights, updatedBookings, initialPageNum, initialFlightId])) ,
+    
+
+    gui = \model -> \view -> \update -> \event ->
+        let 
+            model_ = update model event,
+            snap_ = view model_,
+            gui_ = gui model_ view update
+        in
+            Gui snap_ gui_,
+
+
+    initialFlights = [
+        ["F1", "New York", "London", "2024-05-01", "$500", 147],
+        ["F2", "London", "Paris", "2024-05-02", "$300", 148],
+        ["F3", "Paris", "Tokyo", "2024-05-03", "$800", 146],
+        ["F4", "Tokyo", "Sydney", "2024-05-04", "$700", 149],
+        ["F5", "Sydney", "New York", "2024-05-05", "$900", 149]
+    ],
+
+    initialBookings = [
+        ["B1", "F1", "Alice", 2],
+        ["B2", "F2", "Bob", 1],
+        ["B3", "F3", "Charlie", 3]
+    ],
+
+    initialPageNum = 0  ,
+    initialFlightId  = "" ,
+
+    initialModel = [initialFlights, initialFlights, initialBookings, initialPageNum, initialFlightId],
+    initialSnap = view initialModel,
+    initialGui = gui initialModel view update
+
+in  
+    Gui initialSnap initialGui

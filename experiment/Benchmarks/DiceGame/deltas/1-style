@@ -1,0 +1,7 @@
+( ?
+, \(Event "DiceOne" [5]) -> 
+    ( (Html.div (id, +6)::id id id)
+    , ?
+    )
+)
+

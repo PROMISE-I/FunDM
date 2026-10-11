@@ -1,0 +1,10 @@
+( ?
+, \(Event "SetChoice" [0, 0]) ->  
+    ( (Html.div id id (Html.h2 id id ("Pizza meeting, "=>"Pizza meetings, ")::id)::?)
+    , \(Event "SetChoice" [0, 0]) -> 
+        ( (Html.div id id id::id::(Html.table id id (Html.tbody id id ?::(Html.tr id id (Html.td id id ("John Doe"=>"John")::id)::?)::?)::id)::(Html.a id id ("Send"=>"send")::id)::id)
+        , ?
+        )
+    )
+)
+

@@ -1,0 +1,16 @@
+( ?
+, \(Event "BookFlight" ["F1"]) ->  
+    ( (Html.div id id id::(Html.div id id (Html.form id id (insert 3 Html.p [("margin", 5)] [] ["Please CHECK you personal information carefully!"]))::id)::id)
+    , \(Event "PersonalInfoConfirm" ["John", 5]) -> 
+        ( (Html.div id id (insert 1 Html.p [("margin", 5)] [] ["Wish you a nice day!"]))
+        , \(Event "BookFlight" ["F1"]) ->  
+            ( (Html.div id id id::(Html.div id id (Html.form id id ((insert 3 Html.p [("margin", 5)] [] ["Please CHECK you personal information carefully!"]);
+                                                                    (insert 3 Html.p [("margin", 5)] [] ["Be Carefully!!!"])
+                                                                )
+                                                )::id)::id)
+            , ?
+            )
+        )
+    )
+)
+

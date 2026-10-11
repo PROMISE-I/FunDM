@@ -1,0 +1,10 @@
+( ?
+, \(Event "AddTask" ["Exercise"]) ->  
+    ( (Html.div id id (insert 2 Html.p [("margin", 5)] [] ["Stay active and healthy by exercising regularly."]))
+    , \(Event "AddTask" ["Eat Fruits"]) -> 
+        ( (Html.div id id (insert 2 Html.p [("margin", 5)] [] ["Eating fruits daily keeps you energized."]));
+          (Html.div id id (insert 2 Html.p [("margin", 5)] [] ["Stay active and healthy by exercising regularly."]))
+        , ?
+        )
+    )
+)

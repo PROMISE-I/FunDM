@@ -1,0 +1,16 @@
+( ?
+, \(Event "Click" [1]) ->  
+    ( (Html.div id id (Html.div id id id::(Html.div id id (Html.div id id (Html.button id::id::(id, +13)::id id id)::id)::id)::id)::id)
+    , \(Event "Click" ["+/-"]) -> 
+        ( (Html.div id id (Html.div id id id::(Html.div id id id::(Html.div id id (Html.input id::(id, +19)::id id id)::id)::id)::id)::id);
+          (Html.div id id (Html.div id id id::(Html.div id id (Html.div id id (Html.button id::id::(id, +13)::id id id)::id)::id)::id)::id)
+        , \(Event "Click" ["="]) -> 
+            ( (Html.div id id (Html.div id id id::(Html.div id id (Html.div id id (Html.button id::(id, +52)::id id id)::id)::id)::id)::id);
+              (Html.div id id (Html.div id id id::(Html.div id id id::(Html.div id id (Html.input id::(id, +19)::id id id)::id)::id)::id)::id);
+              (Html.div id id (Html.div id id id::(Html.div id id (Html.div id id (Html.button id::id::(id, +13)::id id id)::id)::id)::id)::id)
+            , ?
+            )
+        )
+    )
+)
+

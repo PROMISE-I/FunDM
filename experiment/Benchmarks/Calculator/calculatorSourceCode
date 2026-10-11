@@ -1,0 +1,116 @@
+let 
+    gray   = 105105105 ,
+    green  = 255000    ,
+    red    = 255000000 ,
+    yellow = 255255000 ,
+    white  = 255255255 ,
+    black  = 0         ,
+    
+    inlineBlock = ("display", "inline-block")    ,
+    border      = ("border" , "1px solid gray") ,
+    hc   = ("text-align", "center") ,
+    hr   = ("text-align", "right")  ,
+
+    flex = ("display", "flex")           ,
+    jc   = ("justify-content", "center") ,
+    ali  = ("align-items", "center")     ,
+    
+    width  = \w -> ("width"           , w) ,
+    height = \h -> ("height"          , h) ,
+    margin = \m -> ("margin"          , m) ,
+    paddin = \p -> ("padding"         , p) ,
+    pt     = \n -> ("padding-top"     , n) ,
+    fs     = \s -> ("font-size"       , s) ,
+    bg     = \c -> ("background-color", c) ,
+    color  = \c -> ("color"           , c) ,
+
+    boxShd = ("box-shadow", "2px 2px 5px rgba(0, 0, 0, 0.3)") , 
+    
+    calc = \op -> \lhs -> \rhs ->  
+        case op of
+            "*" -> lhs * rhs |
+            "+" -> lhs + rhs |
+            "-" -> lhs - rhs |
+             _  -> lhs       , 
+
+    buttons = [
+        ["CE", "C"  , "X", "" ],
+        ["7" , "8"  , "9", "*"],
+        ["4" , "5"  , "6", "-"],
+        ["1" , "2"  , "3", "+"],
+        ["0" , "+/-", "=", "" ]
+    ] ,
+    
+    genRow = \row ->
+        case row of
+            [] -> [] |
+            str :: rest ->
+                let
+                    btn = Html.input 
+                        [width 60, height 40, margin 2, fs 18, hc] 
+                        [("onclick", "Click"), ("value", str), ("type", "button")] 
+                        []
+                in  
+                    btn :: (genRow rest) ,
+    
+    genRows = \rows ->
+        case rows of
+            []          -> [] |
+            row :: rest -> (Html.div [] [] (genRow row)) :: (genRows rest) ,
+
+    view = \model -> 
+        case model of
+            mem::op::input::[] ->
+                let 
+                    display = Html.div [] [] 
+                        [ Html.button [width 252, height 40, margin 2, fs 25, hr] [] 
+                            [input]
+                        ] ,
+                    rows    = genRows buttons
+                in
+                    Html.div [flex, jc, ali] [] 
+                        [ Html.div [width 280, paddin 20, boxShd, border] [] 
+                            [ Html.h2  [hc] [] [ "Calculator" ] 
+                            , Html.div [hc] [] (display :: rows) 
+                            ]
+                        ] ,
+    
+    update = \model -> \event ->
+        case model of
+            mem::op::input::[] ->
+                case event of
+                    Event "Click" btn::[] -> 
+                        (case btn of
+                            "CE"  -> [mem, op, initInput] |
+                            "C"   -> [initMem, initOp, initInput] |
+                            "X"   -> [mem, op, input - (input % 10)] |
+                            "*"   -> [input, "*", initInput] |
+                            "-"   -> [input, "-", initInput] |
+                            "+"   -> [input, "+", initInput] |
+                            "+/-" -> [mem, op, -input] |
+                            "="   -> 
+                                let 
+                                    res = calc op mem input
+                                in
+                                    [res, initOp, res] |
+                            num   -> [mem, op, input * 10 + num]
+                        ) | 
+                    e -> model ,
+            
+    gui = \model -> \view -> \update -> \event ->
+        let 
+            model_ = update model event ,
+            snap_  = view model_        ,
+            gui_   = gui model_ view update
+        in
+            Gui snap_ gui_ ,
+    
+    initMem   = -1 ,
+    initOp    = "" ,
+    initInput = 0  ,
+    
+    initModel = [initMem, initOp, initInput] ,
+    initSnap  = view initModel ,
+    initGui   = gui initModel view update
+in
+    Gui initSnap initGui

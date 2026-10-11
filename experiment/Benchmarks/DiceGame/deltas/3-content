@@ -1,0 +1,15 @@
+( ?
+, \(Event "DiceOne" [5]) ->  
+    ( (Html.div id id id::id::id::id::id::id::id::(Html.p id id (Html.span id id ("John"=>"Johns")::id)::id)::id)
+    , \(Event "DiceTwo" [6]) -> 
+        ( (Html.div id id id::id::id::id::id::id::id::id::(Html.div id id (Html.label id id ("Dice One: "=>"Dice First: ")::id)::id)::id);
+          (Html.div id id id::id::id::id::id::id::id::(Html.p id id (Html.span id id ("John"=>"Johns")::id)::id)::id)
+        , \(Event "Confirm" []) -> 
+            ( (Html.div id id id::id::id::id::id::id::id::(Html.p id id (Html.span id id ("Nick"=>"Nicks")::id)::id)::id);
+              (Html.div id id id::id::id::id::id::id::id::id::(Html.div id id (Html.label id id ("Dice One: "=>"Dice First: ")::id)::id)::id);
+              (Html.div id id id::id::id::id::id::id::id::(Html.p id id (Html.span id id ("John"=>"Johns")::id)::id)::id)
+            , ?
+            )
+        )
+    )
+)

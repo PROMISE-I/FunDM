@@ -1,0 +1,16 @@
+( ?
+, \(Event "Increase" []) ->  
+    ( (Html.div id id (Html.div id id (Html.div id id id::(Html.h3 id id (insert 0 Html.p [("margin", 10)] [] ["Ops! "]))::id)::id)::id)
+    , \(Event "Decrease" []) -> 
+        ( (Html.div id id (Html.div id id (Html.div id id id::(Html.h3 id id (insert 0 Html.p [("fs", 50)] [] ["This is a simple demonstration of counter."]))::id)::id)::id);
+          (Html.div id id (Html.div id id (Html.div id id id::(Html.h3 id id (insert 0 Html.p [("margin", 10)] [] ["Ops! "]))::id)::id)::id)
+        , \(Event "Increase" []) -> 
+            ( (Html.div id id (Html.div id id (Html.div id id id::(Html.h3 id id (insert 0 Html.p [("padding", 10)] [] ["Nice to meet you here!"]))::id)::id)::id);
+              (Html.div id id (Html.div id id (Html.div id id id::(Html.h3 id id (insert 0 Html.p [("fs", 50)] [] ["This is a simple demonstration of counter."]))::id)::id)::id);
+              (Html.div id id (Html.div id id (Html.div id id id::(Html.h3 id id (insert 0 Html.p [("margin", 10)] [] ["Ops! "]))::id)::id)::id)
+            , ?
+            )
+        )
+    )
+)
+

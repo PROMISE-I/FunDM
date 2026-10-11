@@ -1,0 +1,15 @@
+( ?
+, \(Event "SetChoice" [0, 0]) ->  
+    ( (Html.div id id id::(Html.p id id (insert 0 Html.p [("margin", 5)] [] ["Have a nice day!"]))::id)
+    , \(Event "SetChoice" [0, 0]) -> 
+        ( (Html.div id id id::(Html.p id id ((insert 0 Html.p [("margin", 5)] [] ["I am not sure whether the network is OK..."]);
+                                             (insert 0 Html.p [("margin", 5)] [] ["Have a nice day!"])
+                                            )
+                              )::?
+          )
+        , ?
+        )
+    )
+)
+
+

@@ -1,0 +1,121 @@
+let
+    green = 144238144,
+    white = 255255255,
+    lightGray = 211211211,
+    darkGray = 169169169,
+    buttonBG = 34071580, 
+    buttonColor = 255255255,
+
+    listGet = \xs -> \idx ->
+        case xs of
+            []    -> "Nothing" |
+            x::ys -> 
+                case idx of 
+                    0 -> x |
+                    _ -> listGet ys (idx-1)
+    ,
+    
+    genMainPageItem = \info ->
+        case info of 
+            icon :: name :: time :: event :: _ ->
+                Html.div [("background-color", lightGray), ("width", 220), ("margin", 15), ("padding", 10), ("cursor", "pointer")] [("onclick", event)]
+                    [ Html.img [("width", 180), ("height", 120)] [("src", icon)] []
+                    , Html.div [("font-size", 20), ("margin-top", 10)] [] [name]
+                    , Html.div [("font-size", 16), ("margin-top", 5)] [] [time, " min"]
+                    ]
+    ,
+    
+    genMainPageItems = \infos ->
+        case infos of
+            []         -> [] |
+            info::rest -> 
+                (genMainPageItem info) :: (genMainPageItems rest)
+    ,
+    
+    mainPage = \infos ->
+        Html.div [] []
+            [ Html.h2 [("font-size", 28), ("text-align", "center"), ("margin-bottom", 20)] [] ["Select Your Workout!"]
+            , Html.div [("display", "flex"), ("justify-content", "center"), ("flex-wrap", "wrap")] [] (genMainPageItems infos)
+            ]
+    ,
+    
+    genSubPageDetail = \info ->
+        case info of
+            icon :: name :: time :: _ :: intensity :: steps :: _ ->
+                Html.div [] []
+                    [ Html.div [("font-size", 26), ("background-color", darkGray), ("color", white), ("text-align", "center")] [] [name]
+                    , Html.div [("display", "flex"), ("padding", 20)] []
+                        [ Html.img [("width", 270), ("height", 160), ("margin-right", 20)] [("src", icon)] []
+                        , Html.div [] []
+                            [ Html.div [("font-size", 18)] [] ["Duration: ", time, " minutes"]
+                            , Html.div [("margin-top", 10), ("font-size", 18)] [] ["Intensity: ", intensity]
+                            , Html.div [("margin-top", 15)] [] ["Steps: ", steps]
+                            ]
+                        ]
+                    , Html.button 
+                        [ ("background-color", buttonBG) 
+                        , ("border", "none")               
+                        , ("color", buttonColor)                 
+                        , ("padding", 9)         
+                        , ("text-align", "center")         
+                        , ("text-decoration", "none")      
+                        , ("display", "inline-block")      
+                        , ("font-size", 16)                
+                        , ("margin", 4)           
+                        , ("cursor", "pointer")            
+                        , ("border-radius", 12)            
+                        ] [("onclick", "Back")] ["Select Other Workout!"]
+                    ]
+    ,
+    
+    subPage = \info ->
+        Html.div [("padding", 20), ("background-color", green)] [] 
+            [ genSubPageDetail info ]
+    ,
+    
+    workoutInfos = 
+        [ [ "https://images.pexels.com/photos/1051838/pexels-photo-1051838.jpeg"
+          , "Morning Yoga", 30, "Detail0", "Low"
+          , Html.div [] [] ["Step 1: Warm-up", Html.br [] [] [], "Step 2: Stretch", Html.br [] [] [], "Step 3: Poses"]
+          ]
+        , [ "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg"
+          , "Cardio Blast", 45, "Detail1", "High"
+          , Html.div [] [] ["Step 1: Jumping Jacks", Html.br [] [] [], "Step 2: Squats", Html.br [] [] [], "Step 3: Burpees"]
+          ]
+        , [ "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg"
+          , "Strength Training", 60, "Detail2", "Medium"
+          , Html.div [] [] ["Step 1: Dumbbell Press", Html.br [] [] [], "Step 2: Deadlifts", Html.br [] [] [], "Step 3: Lunges"]
+          ]
+        , [ "https://images.pexels.com/photos/1103242/pexels-photo-1103242.jpeg"
+          , "Pilates", 40, "Detail3", "Low"
+          , Html.div [] [] ["Step 1: Leg Circles", Html.br [] [] [], "Step 2: Roll-Up", Html.br [] [] [], "Step 3: Spine Stretch"]
+          ]
+        ] ,
+    
+    view = \model ->
+        case model of
+            -1 -> mainPage workoutInfos |
+            _  -> subPage (listGet workoutInfos model) ,
+    
+    update = \model -> \event ->
+        case event of
+            Event "Detail0"  [] ->  0 |
+            Event "Detail1"  [] ->  1 |
+            Event "Detail2"  [] ->  2 |
+            Event "Detail3"  [] ->  3 |
+            Event "Back"     [] -> -1 
+            ,
+    
+    gui = \model -> \view -> \update -> \event ->
+        let 
+            model_ = update model event ,
+            snap_  = view model_        ,
+            gui_   = gui model_ view update
+        in
+            Gui snap_ gui_ ,
+    
+    initModel = -1 ,
+    initSnap = view initModel ,
+    initGui  = gui initModel view update
+in
+    Gui initSnap initGui

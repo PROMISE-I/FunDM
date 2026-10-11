@@ -1,0 +1,13 @@
+( ?
+, \(Event "SetChoice" [0, 0]) ->  
+    ( (Html.div id id (Html.h2 id id ("Pizza meeting, "=>"Pizza meetings, ")::id)::?)
+    , \(Event "SetChoice" [0, 0]) -> 
+        ( (Html.div id id id::id::(Html.table id id (Html.tbody id id id::(Html.tr id id (Html.td id id ("John Doe"=>"John")::?)::?)::?)::id)::(Html.a id id ("Send"=>"send")::id)::id)
+        , \(Event "SetChoice" [0, 0]) -> 
+            ( (Html.div id id id::id::(Html.table id id (Html.tbody id id id::(Html.tr id id (Html.td id id ("John Doe"=>"John")::?)::?)::?::(Html.tr id id id::(Html.td id id (+1)::id)::id)::id)::?)::(Html.a id id ("Send"=>"send")::id)::id)
+            , ?
+            )
+        )
+    )
+)
+

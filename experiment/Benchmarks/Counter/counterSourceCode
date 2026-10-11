@@ -1,0 +1,81 @@
+let
+    gray   = 105105105 ,
+    green  = 255000    ,
+    red    = 255000000 ,
+    blue   = 255       ,
+    white  = 255255255 ,
+    black  = 0         ,
+
+    flex   = ("display", "flex")           ,
+    jc     = ("justify-content", "center") ,
+    ali    = ("align-items", "center")     ,
+    center = ("text-align", "center")      ,
+    noBord = ("border", "none")            ,
+    ptr    = ("cursor", "pointer")         ,
+    
+    width  = \w -> ("width"           , w) ,
+    height = \h -> ("height"          , h) ,
+    margin = \m -> ("margin"          , m) ,
+    fs     = \s -> ("font-size"       , s) ,
+    bg     = \c -> ("background-color", c) ,
+    color  = \c -> ("color"           , c) ,
+
+    view = \model ->
+        case model of
+            count::[] ->
+                let 
+                    message = 
+                        case count >= 10 of
+                            True  -> "You've reached 10!" |
+                            False -> "You've not reached 10..." ,
+                    msgColor = 
+                        case count >= 10 of
+                            True  -> red |
+                            False -> black ,
+                            
+                    display = Html.div [] [] 
+                        [ Html.h1  [] [] [ "Counter: ", count ]
+                        , Html.h3  [color msgColor] [] [ message ]
+                        ]
+                in
+                    Html.div [flex, jc, ali] [] 
+                        [ Html.div [width 300, margin 10] [] 
+                            [ display 
+                            , Html.button [ptr, width 140, height 40, margin 5, fs 18, bg green, color black] 
+                                [("onclick", "Increment")] 
+                                ["Increment"]
+                            , Html.button [ptr, noBord, width 140, height 40, margin 5, fs 18, bg red, color white] 
+                                [("onclick", "Decrement")] 
+                                ["Decrement"]
+                            , Html.button [ptr, width 290, height 40, margin 5, fs 18, bg gray, color black] 
+                                [("onclick", "Reset")] 
+                                ["Reset"]
+                            ]
+                        ] ,
+
+    update = \model -> \event ->
+        case model of
+            count::[] ->
+                case event of
+                    Event "Increment" _ ->
+                        [count + 1] |
+                    Event "Decrement" _ ->
+                        [count - 1] |
+                    Event "Reset" _ ->
+                        [0] |
+                    _ -> model ,
+
+    gui = \model -> \view -> \update -> \event ->
+        let 
+            model_ = update model event ,
+            snap_  = view model_        ,
+            gui_   = gui model_ view update
+        in
+            Gui snap_ gui_ ,
+
+    initCount = 0 ,
+    initModel = [initCount] ,
+    initSnap  = view initModel ,
+    initGui   = gui initModel view update
+in
+    Gui initSnap initGui

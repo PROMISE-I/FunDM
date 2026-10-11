@@ -1,0 +1,6 @@
+( ?
+, \(Event "DiceOne" [5]) -> 
+    ( (Html.div id id id::id::id::id::(Html.p id id (insert 0 Html.p [] [] ["Have a nice day!"]))::id)
+    , ?
+    )
+)

@@ -1,0 +1,10 @@
+( ?
+, \(Event "AddTask" ["Exercise"]) ->  
+    ( (Html.div id id id::(Html.ol id id id::(Html.li id id ("Sleep"=>"Sleep...")::id)::id)::id)
+    , \(Event "AddTask" ["Eat Fruits"]) -> 
+        ( (Html.div id id id::(Html.ol id id id::id::id::(Html.li id id ("Eat"=>"Eat...")::id)::id)::id);
+          (Html.div id id id::(Html.ol id id id::(Html.li id id ("Sleep"=>"Sleep...")::id)::id)::id)
+        , ?
+        )
+    )
+)

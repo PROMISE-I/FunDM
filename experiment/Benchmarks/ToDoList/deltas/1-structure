@@ -1,0 +1,6 @@
+( ?
+, \(Event "AddTask" ["Exercise"]) -> 
+    ( (Html.div id id (insert 2 Html.p [("margin", 5)] [] ["Nice to meet you here!"]))
+    , ?
+    )
+)

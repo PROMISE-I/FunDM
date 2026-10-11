@@ -1,0 +1,7 @@
+( ?
+, \(Event "BookFlight" ["F1"]) ->  
+    ( (Html.div id id id::(Html.div id id (Html.form id id (insert 3 Html.p [("margin", 5)] [] ["Please CHECK you personal information carefully!"]))::id)::id)
+    , ?
+    )
+)
+

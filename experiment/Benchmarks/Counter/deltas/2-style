@@ -1,0 +1,11 @@
+( ?
+, \(Event "Increase" []) ->  
+    ( (Html.div id id (Html.div id id id::(Html.button id::id::id::(id, +-3)::id id id)::id)::id)
+    , \(Event "Decrease" []) -> 
+        ( (Html.div id id (Html.div id id id::id::(Html.button id::id::id::id::(id, +-3)::id id id)::id)::id);
+          (Html.div id id (Html.div id id id::(Html.button id::id::id::(id, +2)::id id id)::id)::id)
+        , ?
+        )
+    )
+)
+

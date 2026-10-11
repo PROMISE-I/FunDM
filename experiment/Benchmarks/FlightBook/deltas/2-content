@@ -1,0 +1,9 @@
+( ?
+, \(Event "BookFlight" ["F1"]) ->  
+    ( (Html.div id id id::(Html.div id id (Html.form id id (Html.h3 id id ("Enter your name and seats"=>"Enter your name and number of seats")::id)::id)::id)::id)
+    , \(Event "PersonalInfoConfirm" ["John", 5]) -> 
+        ( (Html.div id id id::id::(Html.div id id id::(Html.table id id id::(Html.tbody id id (Html.tr id id id::id::id::id::id::(Html.td id id (+3)::id)::id)::id)::id)::id)::id)
+        , ?
+        )
+    )
+)

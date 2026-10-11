@@ -1,0 +1,127 @@
+let
+    lightGray = 234234234 ,
+    white     = 255255255 ,
+    blue      = 51133228  ,
+    black     = 0         ,
+    red       = 255000000 ,
+    green     = 255000    ,
+    
+    length = \lst ->
+        case lst of 
+            []         -> 0 |
+            head::tail -> 1 + (length tail) ,
+
+    neutralBG  = ("background-color", lightGray) ,
+    inputColor = ("color", black) ,
+    outputColor = ("color", green) ,
+    buttonColor = ("background-color", blue) ,
+
+    margin = \m -> ("margin", m)  ,
+    pd     = \p -> ("padding", p) ,
+    width  = \w -> ("width", w) ,
+    noBord = ("border", "none") ,
+
+    textCenter  = ("text-align", "center") ,
+
+    addExpense = \desc -> \price -> \cat -> 
+        Html.tr [] [] 
+            [ Html.td [inputColor, textCenter, margin 3] [] [desc]
+            , Html.td [inputColor, textCenter, margin 3] [] [price]
+            , Html.td [inputColor, textCenter, margin 3] [] [cat]
+            ] ,
+
+    genExpenseTable = \expenses ->
+        case expenses of
+            []         -> [] |
+            exp::rest -> 
+                case exp of
+                    desc::price::cat::[] ->
+                        (addExpense desc price cat) :: (genExpenseTable rest) ,
+            
+    calcTotalExp = \expenses ->
+        case expenses of
+            [] -> 0 |
+            exp :: rest -> 
+                case exp of
+                    desc::price::cat::[] -> price + (calcTotalExp rest) ,
+            
+    mainPage = \expenses ->
+        Html.div [neutralBG] []
+            [ Html.h2 [] [] ["Expense Tracker"]
+            , Html.form [] [("onsubmit", "AddExpense")] 
+                [ Html.input [width 136, margin 3] [("name", "Description"), ("placeholder", "Description...")] []
+                , Html.input [width 100, margin 3] [("name", "Price"), ("placeholder", "Price...")] []
+                , Html.input [width 136, margin 3] [("name", "Category"), ("placeholder", "Category...")] []
+                , Html.input [buttonColor] [("type", "submit"), ("value", "Add Expense")] [] 
+                ]
+            , Html.table [] [] 
+                [ Html.tbody [] [] 
+                    (( Html.tr [textCenter] [] 
+                        [ Html.th [inputColor, width 150, margin 3] [] [Html.b [] [] ["Description"]]
+                        , Html.th [inputColor, width 100, margin 3] [] [Html.b [] [] ["Price"]]
+                        , Html.th [inputColor, width 150, margin 3] [] [Html.b [] [] ["Category"]]
+                        ]
+                    )
+                    :: (genExpenseTable expenses)) ]
+            , Html.button [buttonColor, margin 20] [("onclick", "CalculateTotal")] ["Calculate Total"]
+            ] ,
+
+    summaryPage = \expenses ->
+        let 
+            totalExp = calcTotalExp expenses ,
+            numTrans = length expenses ,
+            savings = income - totalExp
+        in
+            Html.div [neutralBG] []
+                [ Html.h2 [] [] ["Summary"]
+                , Html.table [] []  
+                    [ Html.tbody [] [] 
+                        [ Html.tr [textCenter] [] 
+                            [ Html.th [inputColor, width 150, margin 3] [] [Html.b [] [] ["Total Expenses"]]
+                            , Html.th [inputColor, width 150, margin 3] [] [Html.b [] [] ["Total Savings"]]
+                            , Html.th [inputColor, width 220, margin 3] [] [Html.b [] [] ["Number of Transactions"]]
+                            ]
+                        , Html.tr [] [] 
+                            [ Html.td [inputColor, width 150, margin 3, textCenter] [] [totalExp]
+                            , Html.td [inputColor, width 150, margin 3, textCenter] [] [savings]
+                            , Html.td [inputColor, width 220, margin 3, textCenter] [] [numTrans]
+                            ]
+                        ] 
+                    ]
+                , Html.button [buttonColor, margin 20] [("onclick", "Back")] ["Back to Main"]
+                ] ,
+
+    view = \model -> 
+        case model of
+            0::expenses::[] -> mainPage expenses |
+            1::expenses::[] -> summaryPage expenses ,
+
+    update = \model -> \event -> 
+        case event of
+            Event "AddExpense" desc::price::cat::[] -> 
+                (case model of 
+                    0::expenses::[] -> [0, [desc, price, cat]::expenses] |
+                    _               -> model) |
+            Event "CalculateTotal" [] -> 
+                (case model of 
+                    0::expenses::[] -> [1, expenses] |
+                    _               -> model) |
+            Event "Back" [] ->
+                (case model of
+                    1::expenses::[] -> [0, expenses] |
+                    _               -> model) ,
+
+    gui = \model -> \view -> \update -> \event ->
+    let 
+        model_ = update model event ,
+        snap_  = view model_        ,
+        gui_   = gui model_ view update
+    in
+        Gui snap_ gui_ ,
+
+    income = 3000 , 
+    initModel = [0, [["Milk", 5, "Diary"], ["Apple", 10, "Fruit"], ["Bread", 15, "Staple"]]] ,
+    initSnap = view initModel ,
+    initGui  = gui initModel view update
+in
+    Gui initSnap initGui

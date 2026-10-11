@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>FunDM Experiments Dashboard</title>
+        <script type="text/javascript" src="elm.js"></script>
+    </head>
+
+    <body>
+        <div id="myapp"></div>
+        <!-- <h1>Automated Execution of Experiments</h1> -->
+        
+        <h1>Experiment Dashboard of FunDM</h1>
+        <div id="benchmarks">
+            <p><b>Click</b> on the checkboxes to <b>select the benchmark examples</b> you want to run.</p>
+            <ol id="benchmarks-ol"></ol>
+        </div>
+
+        <div id="buttons">
+            <button id="select-all" type="button" onclick="setAll(true)">Select All</button>
+            <button id="reset-all" type="button" onclick="setAll(false)">Clear All</button>
+            <button id="run-btn" type="button" onclick="runBtn()">Run</button>
+        </div>
+        <p id="progress-box">
+            <span>Progress:</span>
+            <meter></meter>
+            <span id="loader"></span>
+        </p>
+
+        <h2>Experiment Results</h2>
+        <div id="global-results" class="res-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Benchmark Example</th>
+                        <th>Loc</th>
+                        <th>Fwd</th>
+                        <th>Static(Duration)</th>
+                        <th>Static(Duration Percentage)</th>
+                        <th>1-Dyn (Duration)</th>
+                        <th>1-Dyn (Duration Percentage)</th>
+                        <th>2-Dyn (Duration)</th>
+                        <th>2-Dyn (Duration Percentage)</th>
+                        <th>3-Dyn (Duration)</th>
+                        <th>3-Dyn (Duration Percentage)</th>
+                        <!-- <th>Median Duration</th> -->
+                        <th>Bwd</th>
+                        <!-- <th>Diff Height Min</th> -->
+                        <th>DHeight</th>
+                        <!-- <th>Diff Height Max</th> -->
+                         <!-- <th>Diff LOC Min</th> -->
+                        <th>DLoc</th>
+                        <!-- <th>Diff LOC Mid</th> -->
+                        <!-- <th>Diff LOC Max</th> -->
+                        <!-- <th>Diff LOC Avg Percentage</th> -->
+                        <!-- <th>AVG Delta Size</th> -->
+                    </tr>
+                </thead>
+                <tbody id="global-result-tbody"></tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <h3>Backward Results in Detail</h3>
+        <div id="backward-results" class="res-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Result Status Code</th>
+                        <th>Benchmark Example</th>
+                        <th>Delta Name</th>
+                        <th>Delta Size</th>
+                        <th>BWD Duration</th>
+                        <th>FWD Duration</th>
+                        <th>Line Number Diff</th>
+                    </tr>
+                </thead>
+                <tbody id="backward-result-tbody"></tbody>
+            </table>
+        </div>
+
+        <h3>Analysis Results in Detail</h3>
+        <div id="analysis-results"  class="res-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Result Status Code</th>
+                        <th>Benchmark Example</th>
+                        <th>Delta Name</th>
+                        <th>AVG AST Height Diff</th>
+                    </tr>
+                </thead>
+                <tbody id="analysis-result-tbody"></tbody>
+            </table>
+        </div>
+        
+    </body>
+
+    <script type="text/javascript">
+        st = document.body.style;
+        st.margin = 0;
+        st.height = "100vh";
+        var app = Elm.Experiment.init({
+            node: document.getElementById('myapp')
+        });
+    </script>
+
+    <script src="./experiment.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0;
+            padding: 1em;
+            background-color: #b9d7ea;
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 0;
+            padding: 1em;
+            background-color: #15b7b9;
+            color: white;
+        }
+
+        h3 {
+            text-align: center;
+            margin: 0;
+            padding: 1em;
+            background-color: #b9b8b8;
+            color: white;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 30px;
+        }
+
+        hr {
+            border: 0;
+            height: 3px;
+            background-color: lightsteelblue;
+            margin: 20px 0;
+}
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            color: white;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            opacity: 0.6;
+        }
+
+        #benchmarks {
+            font-size: 1.2em;
+        }
+
+        #loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #555;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: none;
+            animation: spin 2s linear infinite;
+        }
+    
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #myapp {
+            display: none;
+        }
+
+        #global-results {
+            min-height: 140px;
+        }
+
+        #backward-results {
+            overflow: auto;
+            max-height: 10%;
+        }
+
+        #analysis-results {
+            overflow: auto;
+            max-height: 10%;
+        }
+
+        #select-all {
+            background-color: rgb(22, 151, 22);
+        }
+
+        #reset-all {
+            background-color: rgb(224, 56, 56);
+        }
+
+        #run-btn {
+            background-color: rgb(63, 63, 240);
+        }
+
+        .res-table {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+    </style>
+</html>
+

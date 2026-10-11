@@ -1,0 +1,7 @@
+( ?
+, \(Event "SetChoice" [0, 0]) -> 
+    ( (Html.div (id, +5)::id id ?)
+    , ?
+    )
+)
+

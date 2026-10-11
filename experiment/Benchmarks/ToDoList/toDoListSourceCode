@@ -1,0 +1,74 @@
+let
+    gray   = 105105105 ,
+    green  = 255000    ,
+    red    = 255000000 ,
+    white  = 255255255 ,
+    black  = 0         ,
+    
+    inlineBlock = ("display", "inline-block")    ,
+    border      = ("border" , "1px solid black") ,
+    noBord      = ("border", "none")             ,
+    hc          = ("text-align", "center")       ,
+    
+    width   = \w -> ("width"           , w) ,
+    height  = \h -> ("height"          , h) ,
+    margin  = \m -> ("margin"          , m) ,
+    padding = \p -> ("padding"         , p) ,
+    fs      = \s -> ("font-size"       , s) ,
+    bg      = \c -> ("background-color", c) ,
+    color   = \c -> ("color"           , c) ,
+
+    tasksToHtml = \tasks -> 
+        case tasks of
+            [] -> [] |
+            tInfo::rest ->
+                case tInfo of
+                    tId::task::[] -> 
+                        Html.li [] [] [task] :: (tasksToHtml rest) ,
+
+    view = \model ->
+        case model of
+            tasks::gId::[] ->
+                Html.div [] [] 
+                    [ Html.h2   [hc] [] [ "To-Do List" ] 
+                    , Html.ol   []   [] (tasksToHtml tasks)
+                    , Html.form []   [("onsubmit", "AddTask")] 
+                        [ Html.input [width 200, height 40, fs 18, margin 5] 
+                            [("name", "task"), ("placeholder", "New task...")] []
+                        , Html.input [noBord, width 100, height 40, margin 5, fs 18, bg green, color white] 
+                            [("type", "submit"), ("value", "Add")] []
+                        , Html.button [noBord, width 100, height 40, margin 5, fs 18, bg red, color white] 
+                        [("onclick", "ClearList")] 
+                        ["Clear"]
+                        ]
+                    ] ,
+
+    update = \model -> \event ->
+        case model of 
+            tasks::gId::[] ->
+                case event of
+                    Event "AddTask" input::[] ->
+                        (case input of
+                            "" -> model |
+                            _  -> [[gId+1, input]::tasks, gId+1]) |
+
+                    Event "ClearList" _ ->
+                        [[], -1] |
+
+                    _ -> model ,
+
+    gui = \model -> \view -> \update -> \event ->
+        let 
+            model_ = update model event ,
+            snap_  = view model_        ,
+            gui_   = gui model_ view update
+        in
+            Gui snap_ gui_ ,
+
+    initTasks = [[0, "Sleep"], [1, "Eat"], [2, "Code"]] ,
+    initGId = 2 ,
+    initModel = [initTasks, initGId] ,
+    initSnap  = view initModel ,
+    initGui   = gui initModel view update
+in
+    Gui initSnap initGui

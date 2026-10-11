@@ -1,0 +1,13 @@
+( ?
+, \(Event "Detail0" []) ->  
+    ( (Html.div id id (Html.div id id (insert 3 Html.p [("margin", 5)] [] ["Ops!"]))::id)
+    , \(Event "Back" []) -> 
+        ( (Html.div id id (insert 1 Html.p [("margin", 5)] [] ["Ops!"]))
+        , \(Event "Detail1" []) -> 
+            ( (Html.div id id (Html.div id id (insert 3 Html.p [("margin", 5)] [] ["Enjoy Burning Calorie!"]))::id)
+            , ?
+            )
+        )
+    )
+)
+

@@ -1,0 +1,13 @@
+( ?
+, \(Event "SetChoice" [0, 0]) ->  
+    ( (Html.div (id, +5)::id id ?)
+    , \(Event "SetChoice" [0, 0]) -> 
+        ( (Html.div (id, +5)::id id id::id::(Html.table id id (Html.tbody id id (Html.tr id id (Html.th id::(id, +-82209209)::id id id)::?)::?)::?)::id)
+        , \(Event "SetChoice" [0, 0]) -> 
+            ( (Html.div (id, +5)::id id id::id::(Html.table id id (Html.tbody id id (Html.tr id id (Html.th id::(id, +-82209209)::id id id)::(Html.th id::(id, +1095877)::id id id)::?)::?)::?)::?)
+            , ?
+            )
+        )
+    )
+)
+

@@ -1,0 +1,13 @@
+( ?
+, \(Event "BookFlight" ["F1"]) ->  
+    ( (Html.div id id id::(Html.div id id (Html.form (id, +5)::id id id)::id)::id)
+    , \(Event "PersonalInfoConfirm" ["John", 5]) -> 
+        ( (Html.div id id id::(Html.div id id id::(Html.form id id id::id::id::(Html.input (id, +93)::id id id)::id)::id)::id)
+        , \(Event "BookFlight" ["F1"]) ->  
+            ( (Html.div id id id::(Html.div id id (Html.form (id, +10)::id id id)::id)::id)
+            , ?
+            )
+        )
+    )
+)
+

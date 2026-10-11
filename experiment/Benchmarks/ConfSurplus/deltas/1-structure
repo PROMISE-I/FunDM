@@ -1,0 +1,6 @@
+( ?
+, \(Event "AddParti" []) -> 
+    ( (Html.div id id (insert 3 Html.p [("margin", 5)] [] ["A simple program to calculate the conference surplus."]))
+    , ?
+    )
+)

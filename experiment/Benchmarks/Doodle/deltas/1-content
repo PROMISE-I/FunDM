@@ -1,0 +1,6 @@
+( ?
+, \(Event "SetChoice" [0, 0]) -> 
+    ( (Html.div id id (Html.h2 id id ("Pizza meeting, "=>"Pizza meetings, ")::id)::?)
+    , ?
+    )
+)

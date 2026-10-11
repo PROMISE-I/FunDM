@@ -1,0 +1,16 @@
+( ?
+, \(Event "DiceOne" [5]) ->  
+    ( (Html.div id id id::id::id::id::(Html.p id id (insert 0 Html.p [] [] ["Have a nice day!"]))::id)
+    , \(Event "DiceTwo" [6]) -> 
+        ( (Html.div id id id::id::id::id::(Html.p id id (insert 0 Html.p [] [] ["Please roll the dice to start the game."]))::id);
+          (Html.div id id id::id::id::id::(Html.p id id (insert 0 Html.p [] [] ["Have a nice day!"]))::id)
+        , \(Event "Confirm" []) -> 
+            ( (Html.div id id id::id::id::id::(Html.p id id (insert 0 Html.p [] [] ["Welcome to our interactive application!"]))::id);
+              (Html.div id id id::id::id::id::(Html.p id id (insert 0 Html.p [] [] ["Please roll the dice to start the game."]))::id);
+              (Html.div id id id::id::id::id::(Html.p id id (insert 0 Html.p [] [] ["Have a nice day!"]))::id)
+            , ?
+            )
+        )
+    )
+)
+
